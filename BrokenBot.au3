@@ -3,12 +3,13 @@
 #pragma compile(Icon, "BrokenBot.org\images\icons\brokenbot.ico")
 #pragma compile(FileDescription, BrokenBot.org - Clash of Clans Bot)
 #pragma compile(ProductName, BrokenBot.org - Clash of Clans Bot)
-#pragma compile(ProductVersion, 2.0)
-#pragma compile(FileVersion, 2.0)
+#pragma compile(ProductVersion, 2.1.2)
+#pragma compile(FileVersion, 2.1.2)
 
-$sBotVersion = "2.0 Beta"
-$sBotTitle = "BrokenBot.org - Break FREE - v" & $sBotVersion
 #include <GUIConstants.au3>
+
+$sBotVersion = "2.1.2"
+$sBotTitle = "BrokenBot.org - Break FREE - v" & $sBotVersion
 
 If _Singleton($sBotTitle, 1) = 0 Then
 	MsgBox(0, "", "Bot is already running.")

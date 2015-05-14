@@ -81,9 +81,9 @@ Func saveConfig() ;Saves the controls settings to the config
 	Else
 		IniWrite($config, "donate", "gtfo", 0)
 	EndIf
-	IniWrite($config, "donate", "donate1", GUICtrlRead($cmbDonateBarbarians))
-	IniWrite($config, "donate", "donate2", GUICtrlRead($cmbDonateArchers))
-	IniWrite($config, "donate", "donate3", GUICtrlRead($cmbDonateGiants))
+	IniWrite($config, "donate", "donate1", _GUICtrlComboBox_GetCurSel($cmbDonateBarbarians))
+	IniWrite($config, "donate", "donate2", _GUICtrlComboBox_GetCurSel($cmbDonateArchers))
+	IniWrite($config, "donate", "donate3", _GUICtrlComboBox_GetCurSel($cmbDonateGiants))
 	IniWrite($config, "donate", "amount1", GUICtrlRead($NoOfBarbarians))
 	IniWrite($config, "donate", "amount2", GUICtrlRead($NoOfArchers))
 	IniWrite($config, "donate", "amount3", GUICtrlRead($NoOfGiants))
@@ -91,12 +91,22 @@ Func saveConfig() ;Saves the controls settings to the config
 	;---------------------------------------------------------------------------------------
 	; Upgrade settings ---------------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
-	$ichkWalls = IniRead($config, "upgrade", "auto-wall", "0")
-	$icmbWalls = IniRead($config, "upgrade", "walllvl", "0")
-	$iUseStorage = IniRead($config, "upgrade", "use-storage", "0")
-	$itxtWallMinGold = IniRead($config, "upgrade", "minwallgold", "0")
-	$itxtWallMinElixir = IniRead($config, "upgrade", "minwallelixir", "0")
-	$icmbTolerance = IniRead($config, "upgrade", "walltolerance", "0")
+	If IsChecked($chkWalls) Then
+		IniWrite($config, "upgrade", "auto-wall", 1)
+	Else
+		IniWrite($config, "upgrade", "auto-wall", 0)
+	EndIf
+	IniWrite($config, "upgrade", "walllvl", _GUICtrlComboBox_GetCurSel($cmbWalls))
+	IniWrite($config, "upgrade", "walltolerance", _GUICtrlComboBox_GetCurSel($cmbTolerance))
+	If IsChecked($UseGold) Then
+		IniWrite($config, "upgrade", "use-storage", 0)
+	ElseIf IsChecked($UseElixir) Then
+		IniWrite($config, "upgrade", "use-storage", 1)
+	ElseIf IsChecked($UseGoldElix) Then
+		IniWrite($config, "upgrade", "use-storage", 2)
+	EndIf
+	IniWrite($config, "upgrade", "minwallgold", GUICtrlRead($txtWallMinGold))
+	IniWrite($config, "upgrade", "minwallelixir", GUICtrlRead($txtWallMinElixir))
 
 	; Relics below...in save but not read
 	If IsChecked($chkUpgrade1) Then
@@ -141,6 +151,12 @@ Func saveConfig() ;Saves the controls settings to the config
 	IniWrite($config, "upgrade", "PosY6", GUICtrlRead($txtUpgradeY6))
 	IniWrite($config, "upgrade", "PosX6", GUICtrlRead($txtUpgradeX6))
 
+	If IsChecked($chkLab) Then
+        IniWrite($config, "upgrade", "auto-uptroops", 1)
+    Else
+        IniWrite($config, "upgrade", "auto-uptroops", 0)
+    EndIf
+    IniWrite($config, "upgrade", "troops-name", _GUICtrlComboBox_GetCurSel($cmbLaboratory))
 	;---------------------------------------------------------------------------------------
 	; Notification settings ----------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
@@ -254,50 +270,24 @@ Func saveConfig() ;Saves the controls settings to the config
 	; Config settings ----------------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
 	If IsChecked($chkBackground) Then
-		IniWrite($config, "general", "Background", 1)
+		IniWrite($config, "config", "Background", 1)
 	Else
-		IniWrite($config, "general", "Background", 0)
+		IniWrite($config, "config", "Background", 0)
 	EndIf
 	If IsChecked($chkForceBS) Then
-		IniWrite($config, "general", "ForceBS", 1)
+		IniWrite($config, "config", "ForceBS", 1)
 	Else
-		IniWrite($config, "general", "ForceBS", 0)
+		IniWrite($config, "config", "ForceBS", 0)
 	EndIf
 	If IsChecked($chkUpdate) Then
-		IniWrite($config, "general", "chkUpdate", 1)
+		IniWrite($config, "config", "chkUpdate", 1)
 	Else
-		IniWrite($config, "general", "chkUpdate", 0)
+		IniWrite($config, "config", "chkUpdate", 0)
 	EndIf
 
 	;---------------------------------------------------------------------------------------
 	; Base location settings ---------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
-	$CCPos[0] = IniRead($config, "position", "xCCPos", "0")
-	$CCPos[1] = IniRead($config, "position", "yCCPos", "0")
-	$frmBotPosX = IniRead($config, "position", "frmBotPosX", "100")
-	$frmBotPosY = IniRead($config, "position", "frmBotPosY", "100")
-	$TownHallPos[0] = IniRead($config, "position", "xTownHall", "-1")
-	$TownHallPos[1] = IniRead($config, "position", "yTownHall", "-1")
-	$ArmyPos[0] = IniRead($config, "position", "xArmy", "0")
-	$ArmyPos[1] = IniRead($config, "position", "yArmy", "0")
-	$SpellPos[0] = IniRead($config, "position", "xSpell", "-1")
-	$SpellPos[1] = IniRead($config, "position", "ySpell", "-1")
-	$KingPos[0] = IniRead($config, "position", "xKing", "0")
-	$KingPos[1] = IniRead($config, "position", "yKing", "0")
-	$QueenPos[0] = IniRead($config, "position", "xQueen", "0")
-	$QueenPos[1] = IniRead($config, "position", "yQueen", "0")
-	For $i = 0 To 3 ;Covers all 4 Barracks
-		$barrackPos[$i][0] = IniRead($config, "position", "xBarrack" & $i + 1, "0")
-		$barrackPos[$i][1] = IniRead($config, "position", "yBarrack" & $i + 1, "0")
-	Next
-	For $i = 0 To 1 ;Cover 2 Dark Barracks
-		$DarkBarrackPos[$i][0] = IniRead($config, "position", "xDarkBarrack" & $i + 1, "0")
-		$DarkBarrackPos[$i][1] = IniRead($config, "position", "yDarkBarrack" & $i + 1, "0")
-	Next
-	For $i = 0 To 16 ;Covers all Collectors
-		$collectorPos[$i][0] = IniRead($config, "position", "xCollector" & $i + 1, "0")
-		$collectorPos[$i][1] = IniRead($config, "position", "yCollector" & $i + 1, "0")
-	Next
 	IniWrite($config, "position", "xCCPos", $CCPos[0])
 	IniWrite($config, "position", "yCCPos", $CCPos[1])
 	Local $frmBotPos = WinGetPos($sBotTitle)
@@ -325,4 +315,6 @@ Func saveConfig() ;Saves the controls settings to the config
 		IniWrite($config, "position", "xBarrack" & $i + 1, $barrackPos[$i][0])
 		IniWrite($config, "position", "yBarrack" & $i + 1, $barrackPos[$i][1])
 	Next
+    IniWrite($config, "position", "LabPosX", $LabPos[0])
+    IniWrite($config, "position", "LabPosY", $LabPos[1])
 EndFunc   ;==>saveConfig

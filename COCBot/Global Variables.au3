@@ -85,12 +85,15 @@ $THText[2] = "8"
 $THText[3] = "9"
 $THText[4] = "10"
 Global $SearchCount = 0 ;Number of searches
+Global $SearchFailed = False ; Last search failed or not
 Global $THaddtiles, $THside, $THi
 Global $StratNames = ""
 Global $prevSelection = ""
 Global $DefaultTab = 0
 
 Global $speedBump = 0
+Global $hTimerClickNext, $fdiffReadGold
+
 Global $prevTab = 0
 Global $slideOut = 0
 Global $slideIn = 0
@@ -237,8 +240,6 @@ Global $frmBotPosY ; Position Y of the GUI
 Global $Hide = False ; If hidden or not
 
 Global $firstrun = True
-Global $chkUpdate
-Global $ichkUpdate
 Global $btnBugRep
 
 Global Enum $modeDonateTrain, $modeDonate, $modeExperience, $modeNormal = 9
@@ -250,7 +251,6 @@ Global $TimeToStop = -1
 
 Global $itxtMinTrophy ; Trophy after drop
 Global $itxtMaxTrophy ; Max trophy before drop trophy
-Global $ichkBackground ; Background mode enabled disabled
 Global $ichkForceBS = 0
 Global $ichkNoAttack = 0, $ichkDonateOnly = 0
 Global $collectorPos[17][2] ;Positions of each collectors
@@ -304,3 +304,32 @@ Global $LastRaidGold = 0
 Global $LastRaidElixir = 0
 Global $LastRaidDarkElixir = 0
 Global $LastRaidTrophy = 0
+
+;UpTroops
+Global $ichkLab
+Global $icmbLaboratory
+Global $itxtLabX = -1
+Global $itxtLabY = -1
+Global $UpBar2X = 175
+Global $UpBar2Y = 379
+Global $UpArchX = 180
+Global $UpArchY = 468
+Global $GiantsX = 307
+Global $GiantsY = 361
+Global $WBreakerX = 373
+Global $WBreakerY = 373
+Global $WizardX = 489
+Global $WizardY = 323
+Global $UpHealX = 515
+Global $UpHealY = 431
+Global $UpDragonX = 591
+Global $UpDragonY = 388
+Global $UpPekkaX = 612
+Global $UpPekkaY = 479
+Global $SpellHealX = 527
+Global $SpellHealY = 381
+Global $SpellLightningX = 549
+Global $SpellLightningY = 461
+Global $SpellRageX = 650
+Global $SpellRageY = 372
+Global $LabPos[2]

@@ -44,6 +44,10 @@ Func readConfig() ;Reads config and sets it to the variables
 	$itxtWallMinElixir = IniRead($config, "upgrade", "minwallelixir", "0")
 	$icmbTolerance = IniRead($config, "upgrade", "walltolerance", "0")
 
+	;Laboratory
+	$ichkLab = IniRead($config, "upgrade", "auto-uptroops", "0")
+	$icmbLaboratory = IniRead($config, "upgrade", "troops-name", "0")
+
 	;---------------------------------------------------------------------------------------
 	; Notification settings ----------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
@@ -80,37 +84,51 @@ Func readConfig() ;Reads config and sets it to the variables
 	;---------------------------------------------------------------------------------------
 	; Config settings ----------------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
-	$ichkBackground = IniRead($config, "config", "Background", "0")
-	$ichkForceBS = IniRead($config, "config", "ForceBS", "0")
-	$ichkUpdate = IniRead($config, "config", "chkUpdate", "0")
+	If IniRead($config, "config", "Background", "0") = 1 Then
+		GUICtrlSetState($chkBackground, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkBackground, $GUI_UNCHECKED)
+	EndIf
+	If IniRead($config, "config", "ForceBS", "0") = 1 Then
+		GUICtrlSetState($chkForceBS, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkForceBS, $GUI_UNCHECKED)
+	EndIf
+	If IniRead($config, "config", "chkUpdate", "0") = 1 Then
+		GUICtrlSetState($chkUpdate, $GUI_CHECKED)
+	Else
+		GUICtrlSetState($chkUpdate, $GUI_UNCHECKED)
+	EndIf
 
 	;---------------------------------------------------------------------------------------
 	; Base location settings ---------------------------------------------------------------
 	;---------------------------------------------------------------------------------------
-	$CCPos[0] = IniRead($config, "position", "xCCPos", "0")
-	$CCPos[1] = IniRead($config, "position", "yCCPos", "0")
+	$CCPos[0] = IniRead($config, "position", "xCCPos", "")
+	$CCPos[1] = IniRead($config, "position", "yCCPos", "")
 	$frmBotPosX = IniRead($config, "position", "frmBotPosX", "100")
 	$frmBotPosY = IniRead($config, "position", "frmBotPosY", "100")
-	$TownHallPos[0] = IniRead($config, "position", "xTownHall", "-1")
-	$TownHallPos[1] = IniRead($config, "position", "yTownHall", "-1")
-	$ArmyPos[0] = IniRead($config, "position", "xArmy", "0")
-	$ArmyPos[1] = IniRead($config, "position", "yArmy", "0")
-	$SpellPos[0] = IniRead($config, "position", "xSpell", "-1")
-	$SpellPos[1] = IniRead($config, "position", "ySpell", "-1")
-	$KingPos[0] = IniRead($config, "position", "xKing", "0")
-	$KingPos[1] = IniRead($config, "position", "yKing", "0")
-	$QueenPos[0] = IniRead($config, "position", "xQueen", "0")
-	$QueenPos[1] = IniRead($config, "position", "yQueen", "0")
+	$TownHallPos[0] = IniRead($config, "position", "xTownHall", "")
+	$TownHallPos[1] = IniRead($config, "position", "yTownHall", "")
+	$ArmyPos[0] = IniRead($config, "position", "xArmy", "")
+	$ArmyPos[1] = IniRead($config, "position", "yArmy", "")
+	$SpellPos[0] = IniRead($config, "position", "xSpell", "")
+	$SpellPos[1] = IniRead($config, "position", "ySpell", "")
+	$KingPos[0] = IniRead($config, "position", "xKing", "")
+	$KingPos[1] = IniRead($config, "position", "yKing", "")
+	$QueenPos[0] = IniRead($config, "position", "xQueen", "")
+	$QueenPos[1] = IniRead($config, "position", "yQueen", "")
 	For $i = 0 To 3 ;Covers all 4 Barracks
-		$barrackPos[$i][0] = IniRead($config, "position", "xBarrack" & $i + 1, "0")
-		$barrackPos[$i][1] = IniRead($config, "position", "yBarrack" & $i + 1, "0")
+		$barrackPos[$i][0] = IniRead($config, "position", "xBarrack" & $i + 1, "")
+		$barrackPos[$i][1] = IniRead($config, "position", "yBarrack" & $i + 1, "")
 	Next
 	For $i = 0 To 1 ;Cover 2 Dark Barracks
-		$DarkBarrackPos[$i][0] = IniRead($config, "position", "xDarkBarrack" & $i + 1, "0")
-		$DarkBarrackPos[$i][1] = IniRead($config, "position", "yDarkBarrack" & $i + 1, "0")
+		$DarkBarrackPos[$i][0] = IniRead($config, "position", "xDarkBarrack" & $i + 1, "")
+		$DarkBarrackPos[$i][1] = IniRead($config, "position", "yDarkBarrack" & $i + 1, "")
 	Next
 	For $i = 0 To 16 ;Covers all Collectors
-		$collectorPos[$i][0] = IniRead($config, "position", "xCollector" & $i + 1, "0")
-		$collectorPos[$i][1] = IniRead($config, "position", "yCollector" & $i + 1, "0")
+		$collectorPos[$i][0] = IniRead($config, "position", "xCollector" & $i + 1, "")
+		$collectorPos[$i][1] = IniRead($config, "position", "yCollector" & $i + 1, "")
 	Next
+	$LabPos[0] = IniRead($config, "position", "LabPosX", "")
+	$LabPos[1] = IniRead($config, "position", "LabPosY", "")
 EndFunc   ;==>readConfig

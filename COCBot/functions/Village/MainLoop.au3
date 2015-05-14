@@ -38,6 +38,9 @@ Func runBot() ;Bot that runs everything in order
 		Collect()
 		If StatusCheck() Then Return
 
+		Laboratory()
+		If StatusCheck() Then Return
+
 		UpgradeBuilding()
 		If StatusCheck() Then Return
 
@@ -49,6 +52,9 @@ Func runBot() ;Bot that runs everything in order
 				Idle($strPlugInInUse)
 				If StatusCheck() Then Return
 
+				If DropTrophy() Then ContinueLoop
+				If StatusCheck() Then Return False
+
 				Call($strPlugInInUse & "_PrepNextBattle")
 
 				While True
@@ -56,7 +62,10 @@ Func runBot() ;Bot that runs everything in order
 					If PrepareSearch() Then
 						$AttackType = Call($strPlugInInUse & "_Search")
 						If BotStopped(False) Then Return
-						If $AttackType = -1 Then ContinueLoop
+						If $AttackType = -1 Then
+							$SearchFailed = True
+							ContinueLoop
+						EndIf
 
 						Call($strPlugInInUse & "_PrepareAttack", $AttackType)
 						If BotStopped(False) Then Return

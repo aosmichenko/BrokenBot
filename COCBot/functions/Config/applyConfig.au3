@@ -53,12 +53,12 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	GUICtrlSetData($txtDonateGiants, $itxtDonateGiants)
 
 	GUICtrlSetData($txtRequest, $itxtRequest)
-	GUICtrlSetData($cmbDonateBarbarians, IniRead($config, "donate", "donate1", "Barbarians"), "Barbarians")
-	GUICtrlSetData($cmbDonateArchers, IniRead($config, "donate", "donate2", "Archers"), "Archers")
-	GUICtrlSetData($cmbDonateGiants, IniRead($config, "donate", "donate3", "Giants"), "Giants")
-	GUICtrlSetData($NoOfBarbarians, IniRead($config, "donate", "amount1", 5), 5)
-	GUICtrlSetData($NoOfArchers, IniRead($config, "donate", "amount2", 5), 5)
-	GUICtrlSetData($NoOfGiants, IniRead($config, "donate", "amount3", 5), 5)
+	_GUICtrlComboBox_SetCurSel($cmbDonateBarbarians, IniRead($config, "donate", "donate1", "0"))
+	_GUICtrlComboBox_SetCurSel($cmbDonateArchers, IniRead($config, "donate", "donate2", "1"))
+	_GUICtrlComboBox_SetCurSel($cmbDonateGiants, IniRead($config, "donate", "donate3", "2"))
+	GUICtrlSetData($NoOfBarbarians, IniRead($config, "donate", "amount1", 5))
+	GUICtrlSetData($NoOfArchers, IniRead($config, "donate", "amount2", 5))
+	GUICtrlSetData($NoOfGiants, IniRead($config, "donate", "amount3", 5))
 	chkRequest()
 	;Other Settings--------------------------------------------------------------------------
 	If $ichkWalls = 1 Then
@@ -90,6 +90,14 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 		GUICtrlSetState($Randomspeedatk, $GUI_UNCHECKED)
 	EndIf
 	Randomspeedatk()
+
+;Lab
+    If $ichkLab = 1 Then
+        GUICtrlSetState($chkLab, $GUI_CHECKED)
+    Else
+        GUICtrlSetState($chkLab, $GUI_UNCHECKED)
+    EndIf
+    _GUICtrlComboBox_SetCurSel($cmbLaboratory, $icmbLaboratory)
 
 	;General Settings--------------------------------------------------------------------------
 	If $frmBotPosX <> -32000 Then
@@ -134,13 +142,6 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 		GUICtrlSetState($chkWideEdge, $GUI_UNCHECKED)
 	EndIf
 
-	If $ichkBackground = 1 Then
-		GUICtrlSetState($chkBackground, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkBackground, $GUI_UNCHECKED)
-	EndIf
-	chkBackground() ;Applies it to hidden button
-
 	If $ichkBotStop = 1 Then
 		GUICtrlSetState($chkBotStop, $GUI_CHECKED)
 	Else
@@ -149,11 +150,6 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 	_GUICtrlComboBox_SetCurSel($cmbBotCommand, $icmbBotCommand)
 	_GUICtrlComboBox_SetCurSel($cmbBotCond, $icmbBotCond)
 
-	If $ichkForceBS = 1 Then
-		GUICtrlSetState($chkForceBS, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkForceBS, $GUI_UNCHECKED)
-	EndIf
 	GUICtrlSetData($txtCapacity, $itxtcampCap)
 	GUICtrlSetData($txtSpellCap, $itxtspellCap)
 
@@ -258,9 +254,4 @@ Func applyConfig() ;Applies the data from config to the controls in GUI
 		GUICtrlSetState($chkDonateOnly, $GUI_UNCHECKED)
 	EndIf
 
-	If $ichkUpdate = 1 Then
-		GUICtrlSetState($chkUpdate, $GUI_CHECKED)
-	Else
-		GUICtrlSetState($chkUpdate, $GUI_UNCHECKED)
-	EndIf
 EndFunc   ;==>applyConfig

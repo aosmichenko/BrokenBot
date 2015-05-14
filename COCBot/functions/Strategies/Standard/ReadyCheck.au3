@@ -17,7 +17,7 @@ Func Standard_ReadyCheck()
 	If $fullarmy And IsChecked($chkDeadActivate) Then Return True
 	If $fullarmy And IsChecked($chkAnyActivate) Then Return True
 	If IsChecked($chkMakeSpells) Then
-		If $fullSpellFactory And IsChecked($chkAnyActivate) And Not IsChecked($ichkNukeOnlyWithFullArmy) Then Return True
+		If $fullSpellFactory And IsChecked($chkNukeOnly) And Not IsChecked($chkNukeOnlyWithFullArmy) Then Return True
 	EndIf
 
 	Return False
@@ -32,7 +32,7 @@ Func Standard_CheckArmyCamp()
 	ClickP($TopLeftClient) ;Click Away
 
 	If $ArmyPos[0] = "" Then
-		LocateCamp()
+		If Not LocateCamp() Then Return
 		SaveConfig()
 	Else
 		If _Sleep(1000) Then Return
@@ -169,7 +169,7 @@ EndFunc   ;==>Standard_TrainIt
 Func Standard_Train($reset = False)
 	resetBarracksError()
 	If $barrackPos[0][0] = "" Then
-		LocateBarrack()
+		If Not LocateBarrack() Then Return
 		SaveConfig()
 		If _Sleep(2000) Then Return
 	EndIf
@@ -235,7 +235,9 @@ Func Standard_Train($reset = False)
 	$troopFirstArch = 0
 	$troopSecondArch = 0
 
+	Local $BarrackControl
 	For $i = 0 To 3
+
 		If _Sleep(500) Then ExitLoop
 
 		ClickP($TopLeftClient) ;Click Away
@@ -245,7 +247,7 @@ Func Standard_Train($reset = False)
 		Click($barrackPos[$i][0], $barrackPos[$i][1]) ;Click Barrack
 		If _Sleep(1000) Then ExitLoop
 
-		Local $TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x603818, 6), 5) ;Finds Train Troops button
+		Local $TrainPos = _PixelSearch(155, 603, 694, 605, Hex(0x9C7C37, 6), 5) ;Finds Train Troops button
 		If IsArray($TrainPos) = False Then
 			SetLog("Barrack " & $i + 1 & " is not available", $COLOR_RED)
 			handleBarracksError($i)
@@ -256,8 +258,18 @@ Func Standard_Train($reset = False)
 			If _Sleep(1000) Then ExitLoop
 
 			If _GUICtrlComboBox_GetCurSel($cmbTroopComp) = 8 Then
+				Switch $i
+					Case 0
+						$BarrackControl = $cmbBarrack1
+					Case 1
+						$BarrackControl = $cmbBarrack2
+					Case 2
+						$BarrackControl = $cmbBarrack3
+					Case 3
+						$BarrackControl = $cmbBarrack4
+				EndSwitch
 				_CaptureRegion()
-				Switch $barrackTroop[$i]
+				Switch _GUICtrlComboBox_GetCurSel($BarrackControl)
 					Case 0
 						While _ColorCheck(_GetPixelColor(220, 320), Hex(0xF89683, 6), 20)
 							Click(220, 320, 75) ;Barbarian
@@ -765,24 +777,24 @@ Func Standard_MakeSpells()
 
 	ClickP($TopLeftClient) ;Click Away
 
-	If $SpellPos[0] = "-1" Then
-		LocateSpellFactory()
+	If $SpellPos[0] = "" Then
+		If Not LocateSpellFactory() Then Return
 		SaveConfig()
 	Else
-		If _Sleep(100) Then Return
+		If _Sleep(500) Then Return
 		Click($SpellPos[0], $SpellPos[1]) ;Click Spell Factory
 	EndIf
 
-	If _Sleep(1000) Then Return ;Do a bit slower
+	If _Sleep(500) Then Return ;Do a bit slower
 	_CaptureRegion()
-	Local $BSpellPos = _PixelSearch(214, 581, 368, 583, Hex(0x4084B8, 6), 5) ;Finds Info button
+	Local $BSpellPos = _WaitForPixel(214, 581, 368, 583, Hex(0x4084B8, 6), 5, 3) ;Finds Info button, wait max 3 seconds
 	If IsArray($BSpellPos) = False Then
 		SetLog("Your Spell Factory is not available", $COLOR_RED)
 		If $DebugMode = 2 Then _GDIPlus_ImageSaveToFile($hBitmap, $dirDebug & "SpellNA-" & @HOUR & @MIN & @SEC & ".png")
 	EndIf
 
 	If _Sleep(1000) Then Return
-	Local $BSpellPos = _PixelSearch(500, 603, 570, 605, Hex(0x275C8F, 6), 5) ;Finds create spells button
+	Local $BSpellPos = _PixelSearch(500, 603, 570, 605, Hex(0x07346F, 6), 5) ;Finds create spells button
 	If IsArray($BSpellPos) Then
 		Click($BSpellPos[0], $BSpellPos[1])
 		If _Sleep(1000) Then Return

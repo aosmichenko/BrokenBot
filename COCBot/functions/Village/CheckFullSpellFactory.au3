@@ -6,8 +6,8 @@ Func CheckFullSpellFactory()
 
 	ClickP($TopLeftClient) ;Click Away
 
-	If $SpellPos[0] = "-1" Then
-		LocateSpellFactory()
+	If $SpellPos[0] = "" Then
+		If Not LocateSpellFactory() Then Return
 		SaveConfig()
 	Else
 		If _Sleep(100) Then Return
